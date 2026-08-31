@@ -298,23 +298,32 @@ onBeforeUnmount(() => {
     min-height: 0;
     padding-top: 96px;
     padding-bottom: $spacing-8;
+    // R26: 64px per the mockup, scaling down only when the phone is too
+    // narrow for it. The downscale must subtract the CONSTANT container pads
+    // (plain vw drifts against them — same trap as the 1025–1439 hero):
+    // «Sales System» needs ≈5.31em ≤ 100vw−48px → fs = 18.8vw − 9px, and it
+    // crosses 64px right at the mockup's 390. Every flow anchor below
+    // derives from this var, so the UA override (main.scss: 11.25vw — its
+    // longest word can't hold 64px) re-anchors the whole section.
+    --hero-fs: min(64px, calc(18.8vw - 9px));
 
     &__title {
       margin-block: 0;
       // reserve the 4-line height — the cart/buttons flow maths depend on it
-      min-height: calc(45vw + 12px);
+      min-height: calc(4 * var(--hero-fs) + 12px);
     }
 
     // R19 (фото 2): the exact mockup split — [Your Online][Sales System] /
     // [With No][Upfront Fee] — narrowed line boxes force the breaks at the
-    // same words in BOTH locales ([Система][Онлайн-Продажів] etc.)
+    // same words. R26: caps in em (font-relative), so they keep forcing the
+    // same split at any --hero-fs
     &__line--1 {
-      max-width: 66vw;
+      max-width: 5.87em;
       margin-inline: auto;
     }
 
     &__line--2 {
-      max-width: 70vw;
+      max-width: 6.23em;
       margin-inline: auto;
     }
 
@@ -334,15 +343,15 @@ onBeforeUnmount(() => {
       left: 50%;
       width: 112vw;
       margin-left: -56vw;
-      // header 96 + title (45vw + 12) + 24 gap
-      top: calc(132px + 45vw);
+      // header 96 + title (4 lines + 12) + 24 gap
+      top: calc(132px + 4 * var(--hero-fs));
     }
 
     // R10/R11 (r6-s5/s12): proportional — the same 4 centred edge-to-edge
     // lines at EVERY ≤768 width in both locales (a px cap broke the wrap on
     // portrait tablets)
     &__title {
-      font-size: 11.25vw; // R16: re-measured for the Title-Case UA lines
+      font-size: var(--hero-fs); // R26: 64px mockup size (UA: main.scss)
       gap: $spacing-1;
     }
 
