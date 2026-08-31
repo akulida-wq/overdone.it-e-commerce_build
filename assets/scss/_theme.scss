@@ -1,0 +1,20 @@
+// _theme.scss — color tokens as CSS custom properties (values from the Figma
+// mockup «<OD> Overdone.it», see DESIGN.md §1). Dark theme only.
+
+:root {
+  --color-bg:             #070707; // page background (background_dark)
+  --color-surface:        #151515; // cards, panels (background)
+  --color-surface-2:      #1d1d1d; // surface hover state
+  --color-accent:         #F12625; // red accent (Red)
+  --color-accent-hover:   #ff3b3a;
+  --color-text:           #ffffff;
+  --color-text-secondary: #a7a7a7; // secondary
+  --color-text-muted:     #7a7a7a; // Grey / captions
+  --color-border:         rgba(255, 255, 255, 0.05); // #ffffff0d in the mockup
+  --color-border-strong:  rgba(255, 255, 255, 0.12);
+  --color-glow:           rgba(241, 38, 37, 0.35); // accent glow on dark
+  --color-border-table:   rgba(161, 163, 165, 0.25); // V2 grid/table borders (S2)
+  --color-fill-soft:      rgba(255, 255, 255, 0.1); // V2 secondary buttons / nav pill
+  --color-error:          #F6762E;
+  --color-success:        #B0D356;
+}

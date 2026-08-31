@@ -1,0 +1,122 @@
+// _variables.scss — fonts, type scale, spacing, radii, breakpoints, respond mixin
+// Colors live in _theme.scss as CSS custom properties.
+
+@use 'sass:map';
+
+// ---------------------------------------------------------------------------
+// Fonts — SF Pro Display 400/500: the exact files production overdone.it
+// loads (md5-verified), subset to woff2 in assets/fonts (R1)
+// ---------------------------------------------------------------------------
+$font-display: 'SF Pro Display', -apple-system, 'SF-fallback', 'Helvetica Neue', Arial, sans-serif;
+$font-mono: 'IBM Plex Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
+
+// ---------------------------------------------------------------------------
+// Type scale (desktop / mobile) — measured on live overdone.it (R1):
+// hero 140 / h2 56 / list items 40 / leads+buttons 20 / nav 15-16 / mono 12-24,
+// letter-spacing −3% everywhere, weights 400 (500 only for numbers/accents).
+// Our hero headline is much longer than theirs, so h1 is 96 not 140.
+// ---------------------------------------------------------------------------
+// R3.0.A: the desktop sizes live as CSS custom properties in _scale.scss so
+// the ≥2560 breakpoint can scale them (main-site logic, docs/BIG_DESKTOP.md).
+// The -m mobile values stay plain px — they apply under max-width media only.
+$fs-h1: 96px;
+$fs-h1-m: 46px;
+$fs-h2: var(--fs-h2);
+$fs-h2-m: 36px;
+$fs-h3: var(--fs-h3);
+$fs-h3-m: 28px;
+$fs-body-lg: var(--fs-body-lg);
+$fs-body-lg-m: 18px;
+$fs-body: var(--fs-body);
+$fs-small: var(--fs-small);
+$fs-mono: var(--fs-mono);
+$fs-mono-m: 12px;
+$fs-number: 96px;
+$fs-number-m: 56px;
+
+// V2 (Figma rebuild, BUILD_V2.md): hero display size and additions
+$fs-hero: var(--fs-hero);   // S1 headline (128px base)
+$fs-hero-m: 56px;           // S1 headline ≤768
+$fs-h4: var(--fs-h4);       // card names, hero note (32px base)
+$fs-nav: var(--fs-nav);     // header nav links (15px base)
+
+$lh-h1: 1.0;
+$lh-h2: 1.0;
+$lh-h3: 1.1;
+$lh-body-lg: 1.3;
+$lh-body: 1.5;
+
+$ls-h1: -0.03em;
+$ls-h2: -0.03em;
+$ls-h3: -0.03em;
+$ls-body-lg: -0.03em;
+$ls-mono: -0.03em;
+
+// site uses regular weight even for the largest headings
+$fw-heading: 400;
+$fw-medium: 500;
+
+// ---------------------------------------------------------------------------
+// Spacing (multiples of 4/8) — $spacing-1: 4px … $spacing-16: 128px
+// ---------------------------------------------------------------------------
+$spacing-1: 4px;
+$spacing-2: 8px;
+$spacing-3: 12px;
+$spacing-4: 16px;
+$spacing-5: 20px;
+$spacing-6: 24px;
+$spacing-7: 32px;
+$spacing-8: 40px;
+$spacing-9: 48px;
+$spacing-10: 56px;
+$spacing-11: 64px;
+$spacing-12: 72px;
+$spacing-13: 80px;
+$spacing-14: 96px;
+$spacing-15: 112px;
+$spacing-16: 128px;
+
+// Vertical rhythm between sections — DESIGN.md §3
+$section-gap: 140px;
+$section-gap-m: 80px;
+
+// ---------------------------------------------------------------------------
+// Radii
+// ---------------------------------------------------------------------------
+$radius-sm: 8px;
+$radius-md: 16px;
+$radius-lg: 24px;
+$radius-pill: 999px;
+
+// ---------------------------------------------------------------------------
+// Layout
+// ---------------------------------------------------------------------------
+// R3.0.A: fluid cap via CSS var (1720px base — grows past 1440 like the main
+// site's 95vw-capped wrapper — and 2290px on ≥2560). See _scale.scss.
+$container-max: var(--container-max);
+$container-pad: 64px;
+$container-pad-m: 24px;
+
+// Breakpoints — DESIGN.md §3
+$bp-xl: 1280px;
+$bp-lg: 1024px;
+$bp-md: 768px;
+$bp-sm: 480px;
+
+$breakpoints: (
+  xl: $bp-xl,
+  lg: $bp-lg,
+  md: $bp-md,
+  sm: $bp-sm
+);
+
+// Max-width media query by breakpoint name (xl / lg / md / sm) or raw px value.
+@mixin respond($bp) {
+  $width: $bp;
+  @if map.has-key($breakpoints, $bp) {
+    $width: map.get($breakpoints, $bp);
+  }
+  @media (max-width: $width) {
+    @content;
+  }
+}

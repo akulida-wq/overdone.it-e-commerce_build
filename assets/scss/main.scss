@@ -1,0 +1,254 @@
+// main.scss — reset, theme, fonts, base typography, layout utilities.
+// _variables.scss and _mixins.scss are injected globally via nuxt.config.js.
+
+@use 'theme';
+@use 'scale';
+@use 'fonts';
+
+// ---------------------------------------------------------------------------
+// Reset
+// ---------------------------------------------------------------------------
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  // R8: the S2 «table» is 100vw full-bleed — on classic-scrollbar systems
+  // 100vw exceeds the client area, so the body clips the sliver (clip, not
+  // hidden: no new scroll container, the pinned sections stay unaffected)
+  overflow-x: clip;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: $font-display;
+  font-size: $fs-body;
+  line-height: $lh-body;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+::selection {
+  // R8: softer selection — the accent at ~35%, not a solid red slab
+  background: rgba(241, 38, 37, 0.35);
+  color: var(--color-text);
+}
+
+// R17 (фото 1): the UA statement line 1 is longer than the EN one and broke
+// the right-aligned desktop composition — a locale-scoped size keeps it on
+// ONE line (36px measured). Lives here: the SFC-scoped :global() compiler
+// mangled the selector into a bare html[lang] rule.
+@media (min-width: 1025px) {
+  html[lang='ua'] .section-model__statement {
+    font-size: 36px;
+  }
+}
+
+// R19: the UA hero line 2 needs a narrower box than the EN one to break as
+// [Без Оплати][На Старті] (EN keeps 70vw for [With No][Upfront Fee])
+@media (max-width: 1024px) {
+  // line 1: wide enough for «Онлайн-Продажів» + its trailing separator (at
+  // 66vw the separator alone wrapped into an EMPTY third line inside the
+  // mask box and pushed the whole stack down)
+  html[lang='ua'] .section-hero__line--1 {
+    max-width: 71vw;
+  }
+
+  html[lang='ua'] .section-hero__line--2 {
+    max-width: 64vw;
+  }
+}
+
+// R12: the app root clips its own overflow — the footer ring deliberately
+// runs past the page end («видно 4/5 по высоте») and must be cropped there
+// instead of stretching the document (fixed elements are not affected)
+.app {
+  overflow: clip;
+}
+
+// Lenis smooth-scroll base styles
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+// ---------------------------------------------------------------------------
+// Base typography
+// ---------------------------------------------------------------------------
+h1,
+.h1 {
+  font-size: $fs-h1;
+  line-height: $lh-h1;
+  letter-spacing: $ls-h1;
+  font-weight: $fw-heading;
+
+  @include respond(md) {
+    font-size: $fs-h1-m;
+  }
+}
+
+h2,
+.h2 {
+  font-size: $fs-h2;
+  line-height: $lh-h2;
+  letter-spacing: $ls-h2;
+  font-weight: $fw-heading;
+
+  @include respond(md) {
+    font-size: $fs-h2-m;
+  }
+}
+
+h3,
+.h3 {
+  font-size: $fs-h3;
+  line-height: $lh-h3;
+  letter-spacing: $ls-h3;
+  font-weight: $fw-heading;
+
+  @include respond(md) {
+    font-size: $fs-h3-m;
+  }
+}
+
+.body-lg {
+  font-size: $fs-body-lg;
+  line-height: $lh-body-lg;
+  letter-spacing: $ls-body-lg;
+
+  @include respond(md) {
+    font-size: $fs-body-lg-m;
+  }
+}
+
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+.mono {
+  @include mono-caption;
+}
+
+// ---------------------------------------------------------------------------
+// Layout utilities
+// ---------------------------------------------------------------------------
+.container {
+  @include container;
+}
+
+.section {
+  @include section-gap;
+}
+
+// ---------------------------------------------------------------------------
+// Reveal utility: elements are pre-hidden only when JS is present and the
+// user has not requested reduced motion; useScrollMotion().reveal() animates
+// them in. Without JS or with reduced motion everything stays visible.
+// ---------------------------------------------------------------------------
+@media (prefers-reduced-motion: no-preference) {
+  html.js .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  html.js .reveal.is-revealed {
+    opacity: 1;
+    transform: none;
+  }
+
+  // V2 P5 entrance pre-hide (below-fold sections; gsap takes over inline).
+  // The hero is deliberately excluded — its cascade only plays behind the
+  // session preloader, so repeat visits paint instantly (LCP-safe).
+  html.js .v2-reveal {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  html.js .v2-mask .section-title__line {
+    transform: translateY(110%);
+  }
+
+  // S10 cells: own left-to-right stagger (R5: pure opacity, no rise)
+  html.js .earn-cell {
+    opacity: 0;
+  }
+
+  // S2 trionn entrance pre-hide (its own timeline replaces v2-reveal there)
+  html.js .project-cell__cover {
+    clip-path: inset(100% 0 0 0);
+  }
+
+  html.js .project-cell__meta {
+    opacity: 0;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Accessibility helpers
+// ---------------------------------------------------------------------------
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 3px;
+}
