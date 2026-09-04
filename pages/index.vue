@@ -29,7 +29,6 @@ onBeforeUnmount(() => {
       <SectionHero />
       <!-- R27: the model statement moved up to slot 2 (was 5th) -->
       <SectionModel />
-      <SectionProjects />
       <!-- R27: hidden for now per the customer — may return later
       <SectionLayers />
       -->
@@ -39,6 +38,8 @@ onBeforeUnmount(() => {
       <SectionSteps />
       <SectionCalc />
       <SectionEarn />
+      <!-- R29.2: «Businesses growing with us» moved down, right before FAQ -->
+      <SectionProjects />
       <SectionFaq />
       <SectionContact />
     </main>
