@@ -302,12 +302,13 @@ watch(range, ([lo, hi], old) => {
   &__inner {
     display: flex;
     gap: $spacing-7;
-    align-items: flex-start;
-    // R29: the percent stretches to the section height — give the section
-    // enough of it (left column alone is ~316) so the mark actually GROWS
+    // R29.1: row centring — the percent's centre matches the left block's
+    align-items: center;
+    // R29: enough height for the full-size percent (left column is ~316)
     min-height: calc(440px * var(--k));
 
     @include respond(lg) {
+      align-items: flex-start;
       min-height: 0;
     }
   }
@@ -323,11 +324,12 @@ watch(range, ([lo, hi], old) => {
     flex: 1;
   }
 
-  // R27/R29: the percent IS the right half — stretched to the FULL section
-  // height, width follows the 427:336 ratio
+  // R27/R29.1: the percent IS the right half — sized to the section height
+  // EXPLICITLY (440 × the 427:336 ratio = 559): the stretch+aspect-ratio
+  // pair resolved circularly and blew past the container's right edge
   &__mark-wrap {
-    align-self: stretch;
     flex-shrink: 0;
+    width: calc(559px * var(--k));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -342,25 +344,12 @@ watch(range, ([lo, hi], old) => {
   }
 
   &__mark-tilt {
-    height: 100%;
-
-    @include respond(lg) {
-      height: auto;
-    }
-  }
-
-  &__mark-tilt {
+    width: 100%; // definite chain wrap(559) → tilt → mark → svg
     will-change: transform;
   }
 
   &__mark {
-    height: 100%;
-    aspect-ratio: 427 / 336;
-
-    @include respond(lg) {
-      height: auto;
-      aspect-ratio: auto;
-    }
+    width: 100%;
   }
 
   // R13/R27: currentColor drives the inlined svg — idle S5-tone, accent
