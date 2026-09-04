@@ -302,7 +302,7 @@ watch(range, ([lo, hi], old) => {
   // R31.3 (фото 1): «отступ сделай тут больше» — extra air below the chips
   // before «We earn…»
   @media (min-width: 1025px) {
-    padding-bottom: calc(var(--rhythm-half) + #{$spacing-13} + #{$spacing-8}); // R31.6: ещё +40 (итого +120)
+    padding-bottom: calc(var(--rhythm-half) + #{$spacing-13} + #{$spacing-13}); // R31.8: ещё +40 (итого +160)
   }
 
   &__inner {

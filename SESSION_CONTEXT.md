@@ -4,6 +4,9 @@
 
 ## Статус: R3…R18 + R19 (2026-08-30) ЗАВЕРШЕНЫ. Ждём следующего просмотра. HANDOFF.md актуален
 
+## R31.7 (2026-09-04) — корзина hero на 32 ниже (десктоп) — ГОТОВО
+- top формулы cart-wrap +32px (замер: cartTop 96→128 @1440, низ 743 < кнопок 772; мобилка не тронута — свой top в md)
+
 ## R31.6 (2026-09-04) — calc→earn ещё +40 (318), Projects ±40 — ГОТОВО
 - padding-bottom калькулятора: rhythm+120 (зазор 318 @1440)
 - SectionProjects: static padding-block rhythm+40; в пин-режиме margin-top 40 + margin-bottom rhythm+40 — ScrollTrigger ПЕРЕНОСИТ маргины пинящегося элемента на pin-spacer (на самом элементе computed 0 — это норма, мерить у спейсера)
