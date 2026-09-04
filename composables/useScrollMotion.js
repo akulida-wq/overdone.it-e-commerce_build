@@ -39,6 +39,12 @@ export function useScrollMotion() {
     })
 
     if (!reducedMotion.value) createLenis()
+
+    // R31.5: ScrollTrigger's own refreshes (resize, media, our calls) keep a
+    // stale trigger ORDER — pin-spacer compensation then lands on the wrong
+    // triggers (S2 pinned ~2250px early after a locale switch). Re-sorting
+    // at the start of EVERY refresh heals all of them at the source.
+    ScrollTrigger.addEventListener('refreshInit', ScrollTrigger.sort)
   }
 
   function createLenis() {

@@ -3,6 +3,18 @@
 // components/_legacy/sections/ and are re-assembled one by one from the new
 // Figma design. The shell (header, footer, lang modal, Lenis, tokens) stays.
 const { scrollTo, ScrollTrigger } = useScrollMotion()
+const { lang } = useLang()
+
+// R31.5: a locale switch re-flows every section (UA runs longer) — remap
+// the pins once the new texts have settled
+watch(lang, () => {
+  nextTick(() => {
+    setTimeout(() => {
+      ScrollTrigger.sort()
+      ScrollTrigger.refresh(true)
+    }, 100)
+  })
+})
 
 onMounted(() => {
   if (import.meta.dev) window.__ST = ScrollTrigger // QA handle
