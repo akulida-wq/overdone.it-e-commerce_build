@@ -206,7 +206,7 @@ onBeforeUnmount(() => {
   &__bg {
     position: absolute;
     left: 50%;
-    top: calc(50% - 12px); // R3.5.1: the mark rides 12px higher
+    top: calc(50% + 84px); // R32.1: centred on the CONTENT (the extra top padding shifted it down)
     transform: translate(-50%, -50%);
     pointer-events: none;
   }
