@@ -96,7 +96,7 @@ $radius-pill: 999px;
 $container-max: var(--container-max);
 $container-pad: 36px; // R27: matched to the live overdone.it (was 64)
 $container-pad-lg: 26px; // R27: original's tablet inset
-$container-pad-m: 24px;
+$container-pad-m: 16px; // R28: mobile standard per the customer
 
 // Breakpoints — DESIGN.md §3
 $bp-xl: 1280px;

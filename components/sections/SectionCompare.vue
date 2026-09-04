@@ -339,7 +339,7 @@ function goToContact() {
     &__cards {
       display: flex;
       flex-direction: column;
-      gap: $spacing-5;
+      gap: $spacing-4; // R28: card gaps cap at 16 on phones
     }
   }
 

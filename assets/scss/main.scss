@@ -88,7 +88,7 @@ ol {
 // formula. The old R19/R26 caps for «Онлайн‑Продажів» are gone with the text.
 @media (max-width: 768px) {
   html[lang='ua'] .section-hero {
-    --hero-fs: min(64px, calc(18.3vw - 8.8px));
+    --hero-fs: min(64px, calc(18.3vw - 5.9px)); // R28: pads 16×2 — UA reaches 64 at 390 too
     --hero-lines: 4;
   }
 }

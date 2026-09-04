@@ -301,11 +301,11 @@ onBeforeUnmount(() => {
     // R26/R27: 64px per the mockup, scaling down only when the phone is too
     // narrow for it. The downscale subtracts the CONSTANT container pads
     // (plain vw drifts against them): the widest EN group «Then You Pay» is
-    // 5.31em ≤ 100vw−48px → fs = 18.8vw − 9px, crossing 64px right at 390.
+    // 5.31em ≤ 100vw−32px → fs = 18.8vw − 6px (64px from ~372).
     // The title is 3 lines in EN ([First Your][Website Sells][Then You Pay])
     // and 4 in UA — --hero-lines carries that into every flow anchor, and
     // the UA override (main.scss) swaps both vars at once.
-    --hero-fs: min(64px, calc(18.8vw - 9px));
+    --hero-fs: min(64px, calc(18.8vw - 6px)); // R28: pads 16×2 (was 24×2)
     --hero-lines: 3;
 
     &__title {

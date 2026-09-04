@@ -531,6 +531,11 @@ onBeforeUnmount(() => {
 }
 
 @include respond(md) {
+  // R28: card gaps cap at 16 on phones
+  .section-steps__grid {
+    gap: $spacing-4;
+  }
+
   .section-steps__title {
     font-size: $fs-h2-m;
   }
