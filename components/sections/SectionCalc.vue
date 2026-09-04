@@ -27,9 +27,9 @@ function onCalcMove(e) {
   const r = markWrap.value.getBoundingClientRect()
   const nx = Math.max(-1, Math.min(1, (e.clientX - (r.left + r.width / 2)) / r.width))
   const ny = Math.max(-1, Math.min(1, (e.clientY - (r.top + r.height / 2)) / r.height))
-  // R20: реакция ×1.5 (было ±9/±6)
-  tRY = nx * 13.5
-  tRX = ny * -9
+  // R29: заказчик — поворот влево/вправо чуть меньше, вверх/вниз чуть больше
+  tRY = nx * 10
+  tRX = ny * -12
 }
 
 function onCalcLeave() {
@@ -303,6 +303,13 @@ watch(range, ([lo, hi], old) => {
     display: flex;
     gap: $spacing-7;
     align-items: flex-start;
+    // R29: the percent stretches to the section height — give the section
+    // enough of it (left column alone is ~316) so the mark actually GROWS
+    min-height: calc(440px * var(--k));
+
+    @include respond(lg) {
+      min-height: 0;
+    }
   }
 
   &__inner {
@@ -316,13 +323,13 @@ watch(range, ([lo, hi], old) => {
     flex: 1;
   }
 
-  // R27 (Figma 1107:5719): the percent IS the right half now — a normal flex
-  // column in place of the removed estimate panel, vertically centred
+  // R27/R29: the percent IS the right half — stretched to the FULL section
+  // height, width follows the 427:336 ratio
   &__mark-wrap {
-    align-self: center;
-    width: calc(427px * var(--k));
+    align-self: stretch;
     flex-shrink: 0;
     display: flex;
+    align-items: center;
     justify-content: center;
     // R17: perspective must sit on the DIRECT parent of the rotating layer —
     // on a distant ancestor the rotateX/rotateY rendered flat («не 3д»)
@@ -335,14 +342,31 @@ watch(range, ([lo, hi], old) => {
   }
 
   &__mark-tilt {
+    height: 100%;
+
+    @include respond(lg) {
+      height: auto;
+    }
+  }
+
+  &__mark-tilt {
     will-change: transform;
+  }
+
+  &__mark {
+    height: 100%;
+    aspect-ratio: 427 / 336;
+
+    @include respond(lg) {
+      height: auto;
+      aspect-ratio: auto;
+    }
   }
 
   // R13/R27: currentColor drives the inlined svg — idle S5-tone, accent
   // while the percent itself is hovered, 600ms both ways
   &__mark {
     display: block;
-    width: 100%;
     color: #1e1e1f; // S5 mark tone (заказчик)
     transition: color 600ms ease;
 

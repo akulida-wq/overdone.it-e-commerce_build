@@ -325,7 +325,7 @@ onBeforeUnmount(() => {
     }
 
     &__line--2 {
-      max-width: 6.23em;
+      max-width: 6.5em; // R29: «Потім – Оплата» 6.31em on one line
       margin-inline: auto;
     }
 
@@ -336,15 +336,15 @@ onBeforeUnmount(() => {
     }
 
     &__bottom {
-      // reserves the cart's flow space: 24px + 62vw cart + 32px
-      margin-top: calc(62vw + 56px);
+      // reserves the cart's flow space: 24px + 66.5vw cart (120vw/1.804) + 32px
+      margin-top: calc(66.5vw + 56px);
     }
 
     &__cart-wrap {
       // margin centring (not transform) — the tilt loop owns transform
       left: 50%;
-      width: 112vw;
-      margin-left: -56vw;
+      width: 120vw; // R29: «картинку чуть увеличить»
+      margin-left: -60vw;
       // header 96 + title (line stack + 12) + 24 gap
       top: calc(132px + var(--hero-lines) * var(--hero-fs));
     }

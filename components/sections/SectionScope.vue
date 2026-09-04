@@ -286,6 +286,12 @@ onBeforeUnmount(() => {
 }
 
 @include respond(md) {
+  // R29 (фото 6): the air under the accordion outweighed the rest — trim the
+  // section's own bottom pad on phones (the next section's pad remains)
+  .section-scope {
+    padding-bottom: $spacing-2;
+  }
+
   .scope-row {
     padding: $spacing-6 $spacing-4;
 

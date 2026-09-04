@@ -82,14 +82,15 @@ ol {
   }
 }
 
-// R27 (new title): the UA hero is 4 lines ([Спершу Ваш][Сайт Продає]
-// [Потім —][Оплата]) against EN's 3, and its widest group «Сайт Продає» is
-// 5.46em — a touch wider than EN's «Then You Pay» (5.31em), so its own fit
-// formula. The old R19/R26 caps for «Онлайн‑Продажів» are gone with the text.
+// R27/R29 (new title): the UA hero mirrors EN's 3 lines ([Спершу Ваш]
+// [Сайт Продає][Потім – Оплата]); its widest group is the one-line l2
+// (6.31em), so its own fit formula. The old R19/R26 caps are gone.
 @media (max-width: 768px) {
   html[lang='ua'] .section-hero {
-    --hero-fs: min(64px, calc(18.3vw - 5.9px)); // R28: pads 16×2 — UA reaches 64 at 390 too
-    --hero-lines: 4;
+    // R29: «Потім – Оплата» (6.31em, en-dash) must hold ONE line at 390 →
+    // fs = (100vw−32)/6.31; the UA stack is 3 lines like EN now
+    --hero-fs: min(64px, calc(15.85vw - 5.1px));
+    --hero-lines: 3;
   }
 }
 

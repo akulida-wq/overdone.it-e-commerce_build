@@ -615,8 +615,18 @@ const inputs = computed(() => {
 // R16 (фото 1): on narrow phones the two tabs stack vertically — side by
 // side each label wrapped into two cramped lines
 @include respond(sm) {
+  // R29 (фото 4): stacked pill tabs floated apart inside the r999 frame —
+  // segmented-control look instead: small inset, own radius per tab, no
+  // negative-margin overlap
   .contact-panel__tabs {
     flex-direction: column;
+    gap: 4px;
+    padding: 4px;
+    border-radius: 32px;
+  }
+
+  .contact-tab {
+    margin: 0;
   }
 }
 

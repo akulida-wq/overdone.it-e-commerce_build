@@ -44,6 +44,9 @@ onBeforeUnmount(() => {
     </main>
 
     <PFooter />
+    <!-- R29: no first-visit language modal — the page opens in English, the
+         switchers (header/footer) do the job
     <LangModal />
+    -->
   </div>
 </template>
