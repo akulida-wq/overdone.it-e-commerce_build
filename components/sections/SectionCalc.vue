@@ -299,6 +299,12 @@ watch(range, ([lo, hi], old) => {
 .section-calc {
   padding-block: var(--rhythm-half); // R3.0.C unified rhythm
 
+  // R31.1: the row-centering slack under the left column (min-height 440)
+  // made the air below (198) beat the air above (142) — even them out
+  @media (min-width: 1025px) {
+    padding-bottom: calc(var(--rhythm-half) - 56px);
+  }
+
   &__inner {
     display: flex;
     gap: $spacing-7;
