@@ -1,5 +1,11 @@
 export default defineNuxtConfig({
   nitro: { compressPublicAssets: true },
+
+  // R30: the Paparazzi case page is hidden for now (paparazzi.shop is live,
+  // the card links straight to the store) — the page file stays for later
+  routeRules: {
+    '/projects/**': { redirect: '/' }
+  },
   compatibilityDate: '2026-08-25',
   ssr: true,
 

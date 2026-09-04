@@ -4,7 +4,7 @@
 // of three equal 654px cells — title cell, Paparazzi card, «next» card. The
 // static stage shows the track at offset 0 (exactly the mockup's start
 // state); the pin + horizontal scroll + stroke-stretch arrive in P6/P7.
-const { t } = useLang()
+const { t, lang } = useLang()
 const rootEl = ref(null)
 const frameEl = ref(null)
 const trackEl = ref(null)
@@ -101,14 +101,18 @@ function openPartner(p) {
   window.open(p.url, '_blank', 'noopener')
 }
 
+// R30: paparazzi.shop is live — the card links straight to it; the case
+// page is hidden for now (route redirects, see nuxt.config), covers are the
+// customer's new locale-specific renders
 const partners = [
   {
     id: 'paparazzi',
     name: 'Paparazzi',
     descKey: 'v2.paparazzi_desc',
-    url: 'https://pprz-school.overdone.it/',
+    url: 'https://paparazzi.shop',
     caseUrl: '/projects/paparazzi',
-    cover: '/img/partners/paparazzi-og.webp'
+    coverEn: '/img/partners/paparazzi-cover-en.webp',
+    coverUa: '/img/partners/paparazzi-cover-ua.webp'
   }
 ]
 
@@ -143,7 +147,7 @@ function goToContact() {
           <div v-for="p in partners" :key="p.id" class="section-projects__cell">
             <div class="project-cell project-cell--work" role="link" tabindex="0" @click="openPartner(p)" @keydown.enter="openPartner(p)">
               <div class="project-cell__cover">
-                <img :src="p.cover" :alt="p.name" width="1200" height="630" loading="lazy" />
+                <img :src="lang === 'ua' ? p.coverUa : p.coverEn" :alt="p.name" width="1400" height="780" loading="lazy" />
               </div>
               <div class="project-cell__meta">
                 <div class="project-cell__info">
@@ -152,7 +156,9 @@ function goToContact() {
                 </div>
                 <div class="project-cell__buttons" @click.stop>
                   <PButton variant="primary" :href="p.url" target="_blank">{{ t('v2.website') }}</PButton>
+                  <!-- R30: case page hidden for now — the Details button goes with it
                   <PButton variant="secondary" :href="p.caseUrl">{{ t('v2.details') }}</PButton>
+                  -->
                 </div>
               </div>
             </div>
