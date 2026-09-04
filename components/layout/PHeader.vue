@@ -4,8 +4,25 @@
 // «simplifying complexity» ticker strip below a divider · «Book a call» CTA.
 // The scroll behavior (hide down / fixed up) and the mobile fullscreen menu
 // are kept from v1; the ticker is static in the P2 stage (motion in P5).
-const { t } = useLang()
+const { t, lang, setLang } = useLang()
 const { scrollTo } = useScrollMotion()
+
+// R27: header language switcher («UA ⌄», Figma 1093:4443) — desktop/tablet
+const langOpen = ref(false)
+const langEl = ref(null)
+
+function pickLang(code) {
+  setLang(code)
+  langOpen.value = false
+}
+
+function onDocClick(e) {
+  if (langOpen.value && langEl.value && !langEl.value.contains(e.target)) langOpen.value = false
+}
+
+function onDocKey(e) {
+  if (e.key === 'Escape') langOpen.value = false
+}
 
 const CALENDLY_URL = 'https://calendly.com/a-harhalyk-overdone'
 const MAIN_SITE = 'https://overdone.it'
@@ -51,10 +68,14 @@ function goToContact() {
 onMounted(() => {
   lastY = window.scrollY
   window.addEventListener('scroll', onScroll, { passive: true })
+  document.addEventListener('click', onDocClick)
+  document.addEventListener('keydown', onDocKey)
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', onScroll)
+  document.removeEventListener('click', onDocClick)
+  document.removeEventListener('keydown', onDocKey)
 })
 </script>
 
@@ -65,7 +86,7 @@ onBeforeUnmount(() => {
   >
     <div class="p-header__inner container">
       <a class="p-header__logo" :href="`${MAIN_SITE}/`" aria-label="Overdone">
-        <LogoOverdone :height="50" />
+        <LogoOverdone :height="41" />
       </a>
 
       <!-- centered nav plashka: links row + mono ticker strip -->
@@ -92,28 +113,37 @@ onBeforeUnmount(() => {
       </nav>
 
       <div class="p-header__actions">
+        <!-- R27: language switcher (Figma 1093:4443); phones use the footer one -->
+        <div ref="langEl" class="p-header__lang">
+          <button
+            type="button"
+            class="p-header__lang-btn"
+            :aria-expanded="langOpen ? 'true' : 'false'"
+            @click="langOpen = !langOpen"
+          >
+            {{ lang.toUpperCase() }}
+            <svg class="p-header__lang-chev" :class="{ 'is-open': langOpen }" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M1.5 3.5 5 7l3.5-3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+          <div v-show="langOpen" class="p-header__lang-menu">
+            <button
+              v-for="code in ['en', 'ua']"
+              :key="code"
+              type="button"
+              class="p-header__lang-item"
+              :class="{ 'is-active': lang === code }"
+              @click="pickLang(code)"
+            >
+              {{ code.toUpperCase() }}
+            </button>
+          </div>
+        </div>
+
         <PButton variant="primary" :href="CALENDLY_URL" target="_blank">
           {{ t('nav.book_call') }}
         </PButton>
       </div>
-
-      <!-- R7 phone header: the CTA collapses into a round call button (the
-           nav plashka drops to a second, full-width level — no burger) -->
-      <a
-        class="p-header__call"
-        :href="CALENDLY_URL"
-        target="_blank"
-        :aria-label="t('nav.book_call')"
-      >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path
-            d="M6.6 3h2.3c.5 0 .9.3 1 .8l.8 3.1c.1.4 0 .9-.4 1.1l-1.6 1.2a13.4 13.4 0 0 0 6.1 6.1l1.2-1.6c.2-.4.7-.5 1.1-.4l3.1.8c.5.1.8.5.8 1v2.3c0 .9-.7 1.6-1.6 1.6C10.9 21 3 13.1 3 4.6 3 3.7 3.7 3 4.6 3h2Z"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </a>
     </div>
   </header>
 </template>
@@ -142,8 +172,8 @@ onBeforeUnmount(() => {
     align-items: center;
     justify-content: space-between;
     gap: $spacing-6;
-    padding-block: $spacing-2;
-    min-height: calc(88px * var(--k)); // R3.0.A
+    padding-block: 5px;
+    min-height: calc(72px * var(--k)); // R27: live overdone.it header height
   }
 
   &__logo {
@@ -152,43 +182,25 @@ onBeforeUnmount(() => {
     @include focus-visible;
   }
 
-  // Centered nav plashka (507×72, radius 8, soft fill + blur) ---------------
+  // Nav plashka — R27: live overdone.it geometry (440×62, radius 8), in flow
+  // and centred BETWEEN the logo and the actions like the original (its pill
+  // sits at the midpoint of the free space, not the page centre)
   &__nav {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
     display: flex;
     flex-direction: column;
-    width: calc(507px * var(--k)); // R3.0.A
-    height: calc(72px * var(--k));
+    width: calc(440px * var(--k));
+    height: calc(62px * var(--k));
+    margin-inline: auto;
+    flex-shrink: 0;
     border-radius: $radius-sm;
     background: var(--color-fill-soft);
     -webkit-backdrop-filter: blur(28px);
     backdrop-filter: blur(28px);
     overflow: hidden;
 
-    // R7 tablet: same plashka, but in-flow between logo and CTA so the three
-    // zones can never overlap on 769–1024
     @include respond(lg) {
-      position: static;
-      transform: none;
-      flex: 1 1 auto;
-      max-width: 460px;
-      margin-inline: auto;
+      flex-shrink: 1;
       min-width: 0;
-    }
-  }
-
-  // R11 (r6-s15): equal-width side zones — the plashka sits DEAD centre
-  // (the CTA is wider than the logo, which skewed the flex centring)
-  @include respond(lg) {
-    &__logo {
-      flex: 1 1 0;
-    }
-
-    &__actions {
-      flex: 1 1 0;
-      justify-content: flex-end;
     }
   }
 
@@ -202,11 +214,12 @@ onBeforeUnmount(() => {
 
   &__nav-link {
     display: inline-block;
-    padding: $spacing-2;
-    font-size: $fs-nav;
+    padding: 6px $spacing-2;
+    font-size: 14px; // R27: original's link size (fits the 440 pill)
     letter-spacing: -0.03em;
     color: var(--color-text);
     transition: opacity 200ms ease;
+    white-space: nowrap;
     @include focus-visible;
 
     &:hover {
@@ -222,7 +235,7 @@ onBeforeUnmount(() => {
   // mono strip under the links (static in P2, marquee in P5)
   &__ticker {
     position: relative;
-    height: calc(35px * var(--k));
+    height: calc(29px * var(--k)); // R27: fits the 62px pill
     display: flex;
     align-items: center;
     overflow: hidden;
@@ -251,56 +264,96 @@ onBeforeUnmount(() => {
   &__actions {
     display: flex;
     align-items: center;
-    gap: $spacing-3;
-  }
-
-  // R7: round call CTA — phone header only
-  &__call {
-    display: none;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: var(--color-accent);
-    color: var(--color-text);
+    gap: $spacing-5;
     flex-shrink: 0;
-    @include focus-visible;
+
+    // R27: the original's CTA is compact (150×36, 15px) — override the
+    // shared PButton size inside the header only
+    .p-button {
+      height: 36px;
+      min-height: 0;
+      padding-inline: $spacing-4;
+      font-size: 15px;
+    }
   }
 
-  // R10 phone header (≤768, r6-s4): ONE row — a small logo, the plashka with
-  // all four links in a SINGLE line (smaller type), the small round call
+  // R27: language switcher — grey «UA ⌄» with a small dark dropdown
+  &__lang {
+    position: relative;
+  }
+
+  &__lang-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: $spacing-2;
+    font-size: 15px;
+    letter-spacing: -0.03em;
+    color: var(--color-text-secondary);
+    transition: color 200ms ease;
+    @include focus-visible;
+
+    &:hover {
+      color: var(--color-text);
+    }
+  }
+
+  &__lang-chev {
+    transition: rotate 250ms ease;
+
+    &.is-open {
+      rotate: 180deg;
+    }
+  }
+
+  &__lang-menu {
+    position: absolute;
+    top: calc(100% + #{$spacing-1});
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    min-width: 64px;
+    padding: $spacing-1;
+    border: 1px solid var(--color-border-strong);
+    border-radius: $radius-sm;
+    background: var(--color-bg);
+  }
+
+  &__lang-item {
+    padding: 6px $spacing-3;
+    border-radius: 4px;
+    font-size: 15px;
+    color: var(--color-text-secondary);
+    text-align: left;
+    transition: color 200ms ease, background-color 200ms ease;
+    @include focus-visible;
+
+    &:hover {
+      color: var(--color-text);
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    &.is-active {
+      color: var(--color-accent);
+    }
+  }
+
+  // R27 phone header (≤768): like the live overdone.it — ONLY the nav pill,
+  // full-width with a small inset; no logo, no CTA, no call button
   @include respond(md) {
     &__inner {
-      gap: $spacing-2;
-      padding-block: $spacing-3;
+      padding-block: 11px;
+      padding-inline: 12px;
       min-height: 0;
     }
 
-    &__logo {
-      flex: 0 0 auto; // the lg flex:1 balance is desktop-tablet only
-
-      :deep(svg) {
-        height: 34px;
-        width: auto;
-      }
-    }
-
+    &__logo,
     &__actions {
       display: none;
     }
 
-    &__call {
-      display: inline-flex;
-      width: 40px;
-      height: 40px;
-    }
-
     &__nav {
-      position: static;
-      transform: none;
-      flex: 1 1 auto;
-      max-width: none;
+      width: 100%;
       min-width: 0;
       height: auto;
       margin-inline: 0;
@@ -313,12 +366,12 @@ onBeforeUnmount(() => {
 
     &__nav-link {
       padding: $spacing-1 3px;
-      font-size: 12px; // compact single-row phone nav
+      font-size: 13px;
       white-space: nowrap;
     }
 
     &__ticker {
-      height: 18px;
+      height: 22px;
     }
 
     &__ticker-track {

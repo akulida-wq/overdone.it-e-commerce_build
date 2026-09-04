@@ -94,7 +94,8 @@ $radius-pill: 999px;
 // R3.0.A: fluid cap via CSS var (1720px base — grows past 1440 like the main
 // site's 95vw-capped wrapper — and 2290px on ≥2560). See _scale.scss.
 $container-max: var(--container-max);
-$container-pad: 64px;
+$container-pad: 36px; // R27: matched to the live overdone.it (was 64)
+$container-pad-lg: 26px; // R27: original's tablet inset
 $container-pad-m: 24px;
 
 // Breakpoints — DESIGN.md §3

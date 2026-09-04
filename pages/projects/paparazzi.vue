@@ -177,7 +177,7 @@ onBeforeUnmount(() => {
 
 <style lang="scss" scoped>
 .case-page {
-  padding-top: calc(88px * var(--k) + #{$spacing-11});
+  padding-top: calc(72px * var(--k) + #{$spacing-11});
   padding-bottom: $spacing-13;
 
   // R24 (Figma 1044:61364): article 864 / panel 304 at 1440 (≈ 2/3 : 1/3).
@@ -266,7 +266,7 @@ onBeforeUnmount(() => {
 // sticky numbered page navigation (Figma 1044:61315: 304px, r4) -------------
 .case-nav {
   position: sticky;
-  top: calc(88px * var(--k) + #{$spacing-5});
+  top: calc(72px * var(--k) + #{$spacing-5});
   width: 304px;
   flex-shrink: 0;
   transition: top 300ms ease; // rides the header's hide/show
@@ -379,7 +379,7 @@ onBeforeUnmount(() => {
 // R24: the tablet KEEPS the sticky panel — narrower, next to a fluid article
 @include respond(lg) {
   .case-page {
-    padding-top: calc(88px * var(--k) + #{$spacing-8});
+    padding-top: calc(72px * var(--k) + #{$spacing-8});
 
     &__grid {
       gap: $spacing-7;

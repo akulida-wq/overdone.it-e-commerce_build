@@ -268,7 +268,7 @@ onBeforeUnmount(() => {
 
     &__line--2 {
       text-align: center;
-      max-width: 70vw;
+      max-width: 76vw; // R27: fits UA «Потім — Оплата» (75.3vw) on one line
       margin-inline: auto;
     }
 
@@ -298,25 +298,27 @@ onBeforeUnmount(() => {
     min-height: 0;
     padding-top: 96px;
     padding-bottom: $spacing-8;
-    // R26: 64px per the mockup, scaling down only when the phone is too
-    // narrow for it. The downscale must subtract the CONSTANT container pads
-    // (plain vw drifts against them — same trap as the 1025–1439 hero):
-    // «Sales System» needs ≈5.31em ≤ 100vw−48px → fs = 18.8vw − 9px, and it
-    // crosses 64px right at the mockup's 390. Every flow anchor below
-    // derives from this var, so the UA override (main.scss: 11.25vw — its
-    // longest word can't hold 64px) re-anchors the whole section.
+    // R26/R27: 64px per the mockup, scaling down only when the phone is too
+    // narrow for it. The downscale subtracts the CONSTANT container pads
+    // (plain vw drifts against them): the widest EN group «Then You Pay» is
+    // 5.31em ≤ 100vw−48px → fs = 18.8vw − 9px, crossing 64px right at 390.
+    // The title is 3 lines in EN ([First Your][Website Sells][Then You Pay])
+    // and 4 in UA — --hero-lines carries that into every flow anchor, and
+    // the UA override (main.scss) swaps both vars at once.
     --hero-fs: min(64px, calc(18.8vw - 9px));
+    --hero-lines: 3;
 
     &__title {
       margin-block: 0;
-      // reserve the 4-line height — the cart/buttons flow maths depend on it
-      min-height: calc(4 * var(--hero-fs) + 12px);
+      // reserve the line-stack height — cart/buttons flow maths depend on it
+      min-height: calc(var(--hero-lines) * var(--hero-fs) + 12px);
     }
 
-    // R19 (фото 2): the exact mockup split — [Your Online][Sales System] /
-    // [With No][Upfront Fee] — narrowed line boxes force the breaks at the
-    // same words. R26: caps in em (font-relative), so they keep forcing the
-    // same split at any --hero-fs
+    // R19/R27: narrowed line boxes force the mockup word groups; caps in em
+    // (font-relative) keep forcing the same split at any --hero-fs.
+    // l1: ≥ «Website Sells» 5.20em / «Сайт Продає» 5.46em, < the next word
+    // joining; l2: ≥ «Then You Pay» 5.31em, < «Потім — Оплата» 6.81em (UA
+    // breaks [Потім —][Оплата])
     &__line--1 {
       max-width: 5.87em;
       margin-inline: auto;
@@ -343,8 +345,8 @@ onBeforeUnmount(() => {
       left: 50%;
       width: 112vw;
       margin-left: -56vw;
-      // header 96 + title (4 lines + 12) + 24 gap
-      top: calc(132px + 4 * var(--hero-fs));
+      // header 96 + title (line stack + 12) + 24 gap
+      top: calc(132px + var(--hero-lines) * var(--hero-fs));
     }
 
     // R10/R11 (r6-s5/s12): proportional — the same 4 centred edge-to-edge

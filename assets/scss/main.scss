@@ -82,33 +82,14 @@ ol {
   }
 }
 
-// R19: the UA hero line 2 needs a narrower box than the EN one to break as
-// [Без Оплати][На Старті] (EN keeps 70vw for [With No][Upfront Fee])
-@media (max-width: 1024px) {
-  // line 1: «Онлайн‑Продажів» is 7.7em — the full container is the only box
-  // that holds it (71vw clipped it by 61px at 390, R26 catch); the
-  // [Система][Онлайн‑Продажів] break still happens naturally — both chunks
-  // together never fit one row.
-  // doubled class = deterministic win over the component's em caps (equal
-  // specificity flips with stylesheet order in dev vs build)
-  html[lang='ua'] .section-hero__line.section-hero__line--1 {
-    max-width: 100%;
-  }
-
-  html[lang='ua'] .section-hero__line.section-hero__line--2 {
-    max-width: 64vw;
-  }
-}
-
-// R26: the EN hero jumps to 64px on phones (mockup), but «Онлайн‑Продажів»
-// is one unbreakable token that can't hold 64px on a 390 screen — UA keeps
-// the proportional size; every hero flow anchor derives from --hero-fs, so
-// the section re-anchors itself
+// R27 (new title): the UA hero is 4 lines ([Спершу Ваш][Сайт Продає]
+// [Потім —][Оплата]) against EN's 3, and its widest group «Сайт Продає» is
+// 5.46em — a touch wider than EN's «Then You Pay» (5.31em), so its own fit
+// formula. The old R19/R26 caps for «Онлайн‑Продажів» are gone with the text.
 @media (max-width: 768px) {
   html[lang='ua'] .section-hero {
-    // second term: «Онлайн‑Продажів» (7.7em) ≤ 100vw−48px container — the
-    // constant pads bite below ~390 (5px clip at 320 on plain 11.25vw)
-    --hero-fs: min(11.25vw, calc(12.9vw - 6.5px));
+    --hero-fs: min(64px, calc(18.3vw - 8.8px));
+    --hero-lines: 4;
   }
 }
 

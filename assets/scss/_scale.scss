@@ -10,7 +10,7 @@
   // headline line 1 never wraps. The container is 100vw − 128px (constant
   // pads!), so a plain vw fraction drifts: fs = (100vw − 128px) · k with
   // k = 128 / 1312 → 9.7vw − 12.5px (128.2 at 1440, the exact fit)
-  --fs-hero: min(140px, calc(9.7vw - 12.5px));
+  --fs-hero: min(140px, calc(9vw - 6.5px)); // R27: UA l1 10.96em ≤ 100vw−72
   --fs-h2: 56px;
   --fs-h3: 40px;
   --fs-h4: 32px;
@@ -70,7 +70,7 @@
 // the main site's single upward breakpoint, verified binary at 2559/2560
 @media (min-width: 2560px) {
   :root {
-    --fs-hero: 220px;   // main: 140 -> 240 (x1.71)
+    --fs-hero: 208px;   // R27: UA l1 10.96em ≤ 2290 container
     --fs-h2: 78px;      // main exact
     --fs-h3: 56px;      // main exact
     --fs-h4: 44px;      // x1.4 like their 40 -> 56

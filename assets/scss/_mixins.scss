@@ -3,12 +3,17 @@
 
 @use 'variables' as v;
 
-// Page container: 1360 max, 64px side padding on desktop, 24px on mobile
+// Page container: --container-max cap, side paddings matched to the live
+// overdone.it (R27): 36 desktop / 26 tablet / 24 mobile
 @mixin container {
   width: 100%;
   max-width: calc(#{v.$container-max} + #{v.$container-pad} * 2);
   margin-inline: auto;
   padding-inline: v.$container-pad;
+
+  @include v.respond(lg) {
+    padding-inline: v.$container-pad-lg;
+  }
 
   @include v.respond(md) {
     padding-inline: v.$container-pad-m;

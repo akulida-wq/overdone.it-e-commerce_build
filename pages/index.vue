@@ -27,10 +27,13 @@ onBeforeUnmount(() => {
     <main id="main">
       <!-- V2 sections S1–S12 are built stage by stage per PROMPTS_V2.md -->
       <SectionHero />
-      <SectionProjects />
-      <SectionLayers />
-      <SectionIncluded />
+      <!-- R27: the model statement moved up to slot 2 (was 5th) -->
       <SectionModel />
+      <SectionProjects />
+      <!-- R27: hidden for now per the customer — may return later
+      <SectionLayers />
+      -->
+      <SectionIncluded />
       <SectionCompare />
       <SectionScope />
       <SectionSteps />

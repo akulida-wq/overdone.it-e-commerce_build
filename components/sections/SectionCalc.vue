@@ -62,6 +62,9 @@ onMounted(() => {
   })
 
   if (reducedMotion.value) return
+  // R27: the chip glow loop (paused entirely under reduced motion)
+  nextLit()
+  litTimer = setInterval(nextLit, 1600)
   // «еле-еле» — slower and shallower than the cart, but the same breath
   gsap.to(markEl.value, { y: 12, duration: 4.5, ease: 'sine.inOut', yoyo: true, repeat: -1 })
   if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
@@ -80,6 +83,7 @@ onBeforeUnmount(() => {
   rootEl.value?.removeEventListener('mouseleave', onCalcLeave)
   cancelAnimationFrame(rafId)
   clearTimeout(hotTimer)
+  clearInterval(litTimer)
 })
 
 // R13: the percent smoothly turns red while the sliders are ALIVE — hovered,
@@ -99,6 +103,23 @@ function pulseHot() {
 
 
 const chips = computed(() => t('v2.calc_chips'))
+
+// R27: the labels glow one after another in a shuffled order — a slow,
+// pleasant loop (text → #791313, stroke → #3C0A09 per the mock); the queue
+// reshuffles when exhausted so the order keeps changing
+const litChip = ref(-1)
+let litTimer = null
+let litQueue = []
+
+function nextLit() {
+  const n = chips.value.length
+  if (!n) return
+  if (!litQueue.length) {
+    litQueue = Array.from({ length: n }, (_, i) => i).sort(() => Math.random() - 0.5)
+    if (litQueue[0] === litChip.value && n > 1) litQueue.push(litQueue.shift())
+  }
+  litChip.value = litQueue.shift()
+}
 const labels = computed(() => t('v2.calc_labels'))
 const marginSteps = computed(() => t('v2.margin_steps'))
 const volumeSteps = computed(() => t('v2.volume_steps5'))
@@ -189,27 +210,36 @@ watch(range, ([lo, hi], old) => {
           <SectionTitle class="section-calc__title v2-mask" :text="t('v2.calc_title')" />
           <p class="section-calc__lead v2-reveal">{{ t('v2.calc_lead') }}</p>
         </div>
-        <!-- R12/R13: the customer's percent at the bottom of the left half;
-             tilts after the cursor anywhere in the section, heats up to the
-             accent while the sliders are alive -->
-        <div
-          ref="markWrap"
-          class="section-calc__mark-wrap"
-          :class="{ 'is-hot': pctHot }"
-          aria-hidden="true"
-        >
-          <div ref="markTilt" class="section-calc__mark-tilt">
-            <div ref="markEl" class="section-calc__mark">
-              <PercentArt />
-            </div>
-          </div>
-        </div>
-
         <div class="section-calc__chips v2-reveal">
-          <span v-for="chip in chips" :key="chip" class="section-calc__chip">{{ chip }}</span>
+          <span
+            v-for="(chip, i) in chips"
+            :key="chip"
+            class="section-calc__chip"
+            :class="{ 'is-lit': litChip === i }"
+          >{{ chip }}</span>
         </div>
       </div>
 
+      <!-- R27 (Figma 1107:5719): the estimate panel is gone — the customer's
+           NEW percent stands in its place; tilt follows the cursor over the
+           section (as before), the accent heat-up now fires on hovering the
+           percent itself -->
+      <div
+        ref="markWrap"
+        class="section-calc__mark-wrap"
+        :class="{ 'is-hot': pctHot }"
+        aria-hidden="true"
+        @pointerenter="onZoneEnter"
+        @pointerleave="onZoneLeave"
+      >
+        <div ref="markTilt" class="section-calc__mark-tilt">
+          <div ref="markEl" class="section-calc__mark">
+            <PercentArt />
+          </div>
+        </div>
+      </div>
+
+      <!-- R27: «A rough estimate» panel hidden per the customer (may return)
       <div class="calc-panel v2-reveal">
         <h3 class="calc-panel__title">{{ t('v2.calc_panel_title') }}</h3>
         <span class="calc-panel__divider" aria-hidden="true" />
@@ -260,6 +290,7 @@ watch(range, ([lo, hi], old) => {
           <p class="calc-panel__disclaimer">{{ t('v2.calc_disclaimer') }}</p>
         </div>
       </div>
+      -->
     </div>
   </section>
 </template>
@@ -285,25 +316,21 @@ watch(range, ([lo, hi], old) => {
     flex: 1;
   }
 
-  // R12 (зелёная рамка): the percent sits at the BOTTOM of the left half,
-  // horizontally centred there, below the chips — never wider than the
-  // panel; desktop only
+  // R27 (Figma 1107:5719): the percent IS the right half now — a normal flex
+  // column in place of the removed estimate panel, vertically centred
   &__mark-wrap {
-    position: absolute;
-    left: 0;
-    bottom: $spacing-6;
-    width: 46%;
+    align-self: center;
+    width: calc(427px * var(--k));
+    flex-shrink: 0;
     display: flex;
     justify-content: center;
     // R17: perspective must sit on the DIRECT parent of the rotating layer —
     // on a distant ancestor the rotateX/rotateY rendered flat («не 3д»)
     perspective: 900px;
-    // the overlay itself must not block the heading/chips — only the percent
-    // area reacts to the cursor (events bubble up to the wrap's listener)
-    pointer-events: none;
 
     @include respond(lg) {
-      display: none;
+      align-self: center;
+      width: min(420px, 70vw);
     }
   }
 
@@ -311,11 +338,11 @@ watch(range, ([lo, hi], old) => {
     will-change: transform;
   }
 
-  // R13: currentColor drives the inlined svg — idle S5-tone, accent while
-  // the sliders are alive (hover/drag/value change), 600ms both ways
+  // R13/R27: currentColor drives the inlined svg — idle S5-tone, accent
+  // while the percent itself is hovered, 600ms both ways
   &__mark {
     display: block;
-    width: min(30vw, 480px);
+    width: 100%;
     color: #1e1e1f; // S5 mark tone (заказчик)
     transition: color 600ms ease;
 
@@ -369,6 +396,13 @@ watch(range, ([lo, hi], old) => {
     font-size: $fs-small;
     letter-spacing: -0.03em;
     color: var(--color-text-muted);
+    // R27: the shuffled glow loop — long soft cross-fades
+    transition: color 700ms ease, border-color 700ms ease;
+
+    &.is-lit {
+      color: #791313; // тон подписи из мока (заказчик)
+      border-color: #3c0a09; // строук из мока
+    }
   }
 }
 

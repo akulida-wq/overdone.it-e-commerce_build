@@ -22,7 +22,9 @@ const props = defineProps({
   // formats a raw value into the displayed/announced string
   format: { type: Function, default: null },
   // the two extreme labels under the track
-  ends: { type: Array, default: null }
+  ends: { type: Array, default: null },
+  // R27: the form slider drops the grey range captions entirely
+  showEnds: { type: Boolean, default: true }
 })
 
 const emit = defineEmits(['update:modelValue', 'input', 'change'])
@@ -184,7 +186,7 @@ function onKeydown(e) {
       <span v-else class="p-slider__lane p-slider__lane--static" aria-hidden="true" />
     </div>
 
-    <div class="p-slider__ends" aria-hidden="true">
+    <div v-if="showEnds" class="p-slider__ends" aria-hidden="true">
       <span>{{ endLabels[0] }}</span>
       <span>{{ endLabels[1] }}</span>
     </div>

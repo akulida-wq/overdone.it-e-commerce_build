@@ -241,7 +241,7 @@ const inputs = computed(() => {
               :label="t('v2.volume_label')"
               approx
               :format="fmtVolume"
-              :ends="[volumeSteps[0], volumeSteps[volumeSteps.length - 1]]"
+              :show-ends="false"
             />
 
             <PButton variant="primary" block type="submit" :loading="loading">
@@ -393,7 +393,7 @@ const inputs = computed(() => {
 .contact-panel__tabs {
   display: flex;
   border: 1px solid var(--color-border-table);
-  border-radius: 12px;
+  border-radius: $radius-pill; // R27: max-rounded tabs (Figma 903:53800)
 }
 
 .contact-tab {
@@ -405,7 +405,7 @@ const inputs = computed(() => {
   margin: -1px;
   padding: $spacing-4 $spacing-3;
   border: 1px solid transparent;
-  border-radius: 12px;
+  border-radius: $radius-pill; // R27: max-rounded tabs
   font-size: $fs-body-lg;
   letter-spacing: $ls-body-lg;
   line-height: 1.1;

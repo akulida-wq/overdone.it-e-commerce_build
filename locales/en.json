@@ -19,8 +19,8 @@
   },
   "v2": {
     "nav_ticker": "simplifying complexity",
-    "hero_title_l1": "Your [Online Sales] System",
-    "hero_title_l2": "With [No Upfront] Fee",
+    "hero_title_l1": "First Your [Website Sells]",
+    "hero_title_l2": "Then You [Pay]",
     "hero_note": "from launch to real sales",
     "projects_title": "Businesses [growing\nwith us]",
     "paparazzi_desc": "Photo and Video Equipment Store",
@@ -152,7 +152,7 @@
     "tab_no": "Not selling online yet",
     "f_name": "Your name",
     "f_company": "Company name and / or link",
-    "f_contact": "Preferred contact",
+    "f_contact": "Telegram or other contact",
     "f_sell": "What you sell",
     "f_sell_plan": "What you plan to sell",
     "f_link": "Link to your store or product",
@@ -182,7 +182,7 @@
     "footer_pages": "Pages",
     "footer_build": "E-commerce Build",
     "calc_title": "Terms are tailored to [each\nbusiness]",
-    "calc_lead": "There is no single percentage for every project — the rate depends on margins, volume and the scope of the system. Move the sliders to see a rough range.",
+    "calc_lead": "There is no single percentage for every project — the rate depends on margins, volume and the scope of the system. These are the factors we weigh:",
     "calc_chips": [
       "business margins",
       "current and projected sales volume",
@@ -574,10 +574,6 @@
       {
         "q": "Can you rebuild an existing online store?",
         "a": "Yes. We can create a new product from scratch or rebuild an existing website and the processes connected to it."
-      },
-      {
-        "q": "Who owns the product and source code?",
-        "a": "Ownership of the product, source code, infrastructure and development deliverables is defined in the partnership agreement before work begins."
       },
       {
         "q": "How long does the revenue-share model last?",
