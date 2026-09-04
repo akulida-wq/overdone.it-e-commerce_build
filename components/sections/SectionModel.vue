@@ -201,12 +201,20 @@ onBeforeUnmount(() => {
   @include respond(md) {
     padding-top: calc(var(--rhythm-half) + #{$spacing-6});
   }
-  overflow: hidden;
+  // R32.2: the lowered ring was cut by the section's bottom edge — clip only
+  // horizontally (phones: the 640 mark is wider than the screen), let the
+  // tail run free vertically (per spec, visible beside clip stays visible)
+  overflow-x: clip;
+  overflow-y: visible;
 
   &__bg {
     position: absolute;
     left: 50%;
     top: calc(50% + 84px); // R32.1: centred on the CONTENT (the extra top padding shifted it down)
+
+    @include respond(md) {
+      top: calc(50% + 12px); // R32.2: mobile extra pad is only +24
+    }
     transform: translate(-50%, -50%);
     pointer-events: none;
   }
