@@ -196,7 +196,7 @@ onBeforeUnmount(() => {
   padding-block: var(--rhythm-half); // R3.0.C unified rhythm
   // R31: «отступ от первой секции чуть-чуть больше» — the hero's bottom row
   // sits closer than the next section below; even the air out
-  padding-top: calc(var(--rhythm-half) + #{$spacing-9} + #{$spacing-8}); // R31.2: ещё +40
+  padding-top: calc(var(--rhythm-half) + #{$spacing-9} + #{$spacing-8} + #{$spacing-13}); // R31.3: ещё +80 (фото 2)
 
   @include respond(md) {
     padding-top: calc(var(--rhythm-half) + #{$spacing-6});

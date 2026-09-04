@@ -197,6 +197,17 @@ onBeforeUnmount(() => {
     height: calc(62px * var(--hk));
     margin-inline: auto;
     flex-shrink: 0;
+
+    // R31.3 (фото 2): dead page centre on desktop — flex centring drifted
+    // left once the lang+CTA block outgrew the logo (matches the original
+    // at 2000: pill centre = page centre)
+    @media (min-width: 1025px) {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin-inline: 0;
+    }
     border-radius: $radius-sm;
     background: var(--color-fill-soft);
     -webkit-backdrop-filter: blur(28px);

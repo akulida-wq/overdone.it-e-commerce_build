@@ -299,10 +299,10 @@ watch(range, ([lo, hi], old) => {
 .section-calc {
   padding-block: var(--rhythm-half); // R3.0.C unified rhythm
 
-  // R31.1: the row-centering slack under the left column (min-height 440)
-  // made the air below (198) beat the air above (142) — even them out
+  // R31.3 (фото 1): «отступ сделай тут больше» — extra air below the chips
+  // before «We earn…»
   @media (min-width: 1025px) {
-    padding-bottom: calc(var(--rhythm-half) - 56px);
+    padding-bottom: calc(var(--rhythm-half) + #{$spacing-8});
   }
 
   &__inner {
