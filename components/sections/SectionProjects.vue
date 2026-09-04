@@ -204,14 +204,16 @@ function goToContact() {
 
 <style lang="scss" scoped>
 .section-projects {
-  padding-block: var(--rhythm-half); // R3.0.C unified rhythm (static modes)
+  // R31.6: +40 воздуха перед и после секции по заказчику
+  padding-block: calc(var(--rhythm-half) + #{$spacing-8});
 
   // R6: in pin mode the section is one viewport, frame centred; the extra
-  // bottom margin keeps a proper gap to the next section after the unpin
+  // margins keep a proper gap to the neighbours around the pin
   &.is-motion {
     height: 100svh;
     padding-block: 0;
-    margin-bottom: var(--rhythm-half);
+    margin-top: $spacing-8; // R31.6
+    margin-bottom: calc(var(--rhythm-half) + #{$spacing-8});
     display: flex;
     align-items: center;
   }
