@@ -173,13 +173,18 @@ onBeforeUnmount(() => {
     justify-content: space-between;
     gap: $spacing-6;
     padding-block: 5px;
-    min-height: calc(72px * var(--k)); // R27: live overdone.it header height
+    min-height: calc(72px * var(--hk)); // R27/R31: live overdone.it (96 at ≥1920)
   }
 
   &__logo {
     display: inline-flex;
     flex-shrink: 0;
     @include focus-visible;
+
+    :deep(svg) {
+      height: min(calc(41px * var(--hk)), 50px); // R31: original tops out at 50
+      width: auto;
+    }
   }
 
   // Nav plashka — R27: live overdone.it geometry (440×62, radius 8), in flow
@@ -188,8 +193,8 @@ onBeforeUnmount(() => {
   &__nav {
     display: flex;
     flex-direction: column;
-    width: calc(440px * var(--k));
-    height: calc(62px * var(--k));
+    width: calc(440px * var(--hk));
+    height: calc(62px * var(--hk));
     margin-inline: auto;
     flex-shrink: 0;
     border-radius: $radius-sm;
@@ -215,7 +220,7 @@ onBeforeUnmount(() => {
   &__nav-link {
     display: inline-block;
     padding: 6px $spacing-2;
-    font-size: 14px; // R27: original's link size (fits the 440 pill)
+    font-size: calc(14px * var(--hk)); // R27: original's link size
     letter-spacing: -0.03em;
     color: var(--color-text);
     transition: opacity 200ms ease;
@@ -235,7 +240,7 @@ onBeforeUnmount(() => {
   // mono strip under the links (static in P2, marquee in P5)
   &__ticker {
     position: relative;
-    height: calc(29px * var(--k)); // R27: fits the 62px pill
+    height: calc(29px * var(--hk)); // R27: fits the 62px pill
     display: flex;
     align-items: center;
     overflow: hidden;
@@ -246,7 +251,7 @@ onBeforeUnmount(() => {
   &__ticker-track {
     display: inline-flex;
     font-family: $font-mono;
-    font-size: calc(12px * var(--k)); // $fs-mono-m scaled on >=2560
+    font-size: calc(12px * var(--hk));
     letter-spacing: $ls-mono;
     color: var(--color-text-secondary);
     white-space: nowrap;
@@ -270,10 +275,10 @@ onBeforeUnmount(() => {
     // R27: the original's CTA is compact (150×36, 15px) — override the
     // shared PButton size inside the header only
     .p-button {
-      height: 36px;
+      height: calc(36px * var(--hk)); // R31: 48 at ≥1920 like the original
       min-height: 0;
-      padding-inline: $spacing-4;
-      font-size: 15px;
+      padding-inline: calc(#{$spacing-4} * var(--hk));
+      font-size: calc(15px * var(--hk));
     }
   }
 

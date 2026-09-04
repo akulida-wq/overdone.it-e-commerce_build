@@ -61,34 +61,40 @@ function initPin() {
 // fade+up. The title cell still uses the shared mask reveal.
 onMounted(() => {
   sectionReveal(rootEl.value)
-  initPin()
+  // R31: create our triggers a tick LATE (like S8) — created synchronously
+  // they measured the page WITHOUT the pin-spacers of the sections that now
+  // sit ABOVE us (S2 moved before FAQ), started ~2250px early and even
+  // ScrollTrigger.refresh() never re-derived them
+  nextTick(() => {
+    initPin()
 
-  if (reducedMotion.value) return
-  const covers = rootEl.value.querySelectorAll('.project-cell__cover')
-  const imgs = rootEl.value.querySelectorAll('.project-cell__cover img')
-  const metas = rootEl.value.querySelectorAll('.project-cell__meta')
+    if (reducedMotion.value) return
+    const covers = rootEl.value.querySelectorAll('.project-cell__cover')
+    const imgs = rootEl.value.querySelectorAll('.project-cell__cover img')
+    const metas = rootEl.value.querySelectorAll('.project-cell__meta')
 
-  const tl = gsap.timeline({
-    scrollTrigger: { trigger: rootEl.value, start: 'top 70%', once: true }
-  })
-  tl.fromTo(
-    covers,
-    { clipPath: 'inset(100% 0 0 0)', y: 40 },
-    { clipPath: 'inset(0% 0 0 0)', y: 0, duration: 1.15, ease: 'expo.out', stagger: 0.15 },
-    0
-  )
-    .fromTo(
-      imgs,
-      { scale: 1.15 },
-      { scale: 1, duration: 1.15, ease: 'expo.out', stagger: 0.15, clearProps: 'transform' },
+    const tl = gsap.timeline({
+      scrollTrigger: { trigger: rootEl.value, start: 'top 70%', once: true }
+    })
+    tl.fromTo(
+      covers,
+      { clipPath: 'inset(100% 0 0 0)', y: 40 },
+      { clipPath: 'inset(0% 0 0 0)', y: 0, duration: 1.15, ease: 'expo.out', stagger: 0.15 },
       0
     )
+      .fromTo(
+        imgs,
+        { scale: 1.15 },
+        { scale: 1, duration: 1.15, ease: 'expo.out', stagger: 0.15, clearProps: 'transform' },
+        0
+      )
     .fromTo(
-      metas,
-      { y: 24, autoAlpha: 0 },
-      { y: 0, autoAlpha: 1, duration: 0.9, ease: 'power3.out', stagger: 0.12 },
-      0.35
-    )
+        metas,
+        { y: 24, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: 0.9, ease: 'power3.out', stagger: 0.12 },
+        0.35
+      )
+  })
 })
 
 onBeforeUnmount(() => {

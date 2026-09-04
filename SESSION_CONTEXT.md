@@ -4,6 +4,13 @@
 
 ## Статус: R3…R18 + R19 (2026-08-30) ЗАВЕРШЕНЫ. Ждём следующего просмотра. HANDOFF.md актуален
 
+## R30 (2026-09-04) — paparazzi.shop живой: ссылка, новые каверы, кейс скрыт — ГОТОВО
+- Карточка Paparazzi: ссылка (карточка+кнопка Website) → https://paparazzi.shop (магазин переехал с pprz-school.overdone.it; сам магазин редиректит на /ru-RU — это их сторона)
+- Кнопка «Детали» закомментирована; кейс-страница СКРЫТА через routeRules '/projects/**' → redirect '/' в nuxt.config (файл страницы цел, вернуть = убрать правило) — ВАЖНО: смена nuxt.config требует рестарта dev-сервера
+- Новые каверы заказчика (Rectangle.jpg=UA, Rectangle-1.jpg=EN с Десктопа) → public/img/partners/paparazzi-cover-{ua,en}.webp (1400×780, sharp q82); в карточке :src по локали (lang из useLang)
+- ГРАБЛЯ ПРОБ: у карточки entrance clip-path inset(100%) + ScrollTrigger once 'top 70%' — при мгновенном scrollTo/element-screenshot триггер не стреляет и карточка ЧЁРНАЯ; проверять только честным колесом
+- Проверено: каверы рендерятся по локалям (naturalWidth 1400), клик → paparazzi.shop, редирект кейса работает (после рестарта dev), консоль чистая
+
 ## R29.2 (2026-09-04) — «Бізнеси, що зростають разом з нами» перед FAQ — ГОТОВО
 - SectionProjects (S2, «Businesses growing with us») перенесена 1в1 из слота 3 на предпоследнее место: …Calc, Earn, PROJECTS, Faq, Contact; пин/стретч-механика прогнана колесом на новом месте — цела; порядок проверен
 - Прод R29.1 перепроверен со свежим кэшем: markW 559, rightInset 0, cart left 50%−1vw ✓ (первый замер ловил stale edge-кэш Vercel — при проверке прода сразу после деплоя обходить кэш ?v=Date.now())

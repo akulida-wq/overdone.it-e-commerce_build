@@ -20,9 +20,15 @@
   --fs-nav: 15px;
   --fs-mono: 14px;
 
-  // layout: fluid container cap (main site: ~95vw capped at 1790;
-  // ours = 1312 content at 1440 growing to the proportional 1720 cap)
-  --container-max: 1720px;
+  // layout: fluid container cap — R31: pads are 36 now, so our content at
+  // 1440 (1368) EQUALS the original's; the cap is theirs verbatim (1790,
+  // reached at 1862; at 2000 content left = 105 — measured 1:1)
+  --container-max: 1790px;
+
+  // R31: the ORIGINAL's header has its own ×4/3 step at ≥1920 (72→96,
+  // CTA 36→48, pill 440×62→584×83 — measured live) while typography stays
+  // put until 2560 — a separate header-only multiplier
+  --hk: 1;
 
   // vertical rhythm between sections (half per side) — R5: roomier
   --rhythm-half: 80px;
@@ -68,6 +74,13 @@
 }
 
 // the main site's single upward breakpoint, verified binary at 2559/2560
+// R31: the original's header step (measured at 2000: header 96, CTA 48)
+@media (min-width: 1920px) {
+  :root {
+    --hk: 1.3333;
+  }
+}
+
 @media (min-width: 2560px) {
   :root {
     --fs-hero: 208px;   // R27: UA l1 10.96em ≤ 2290 container
@@ -80,7 +93,8 @@
     --fs-nav: 20px;
     --fs-mono: 18px;
 
-    --container-max: 2290px; // main: 1790 -> 2387 (x4/3)
+    --container-max: 2387px; // R31: main's exact cap (1790 × 4/3)
+    --hk: 1.4;
 
     --rhythm-half: 104px;
 

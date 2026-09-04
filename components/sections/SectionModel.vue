@@ -194,6 +194,13 @@ onBeforeUnmount(() => {
   align-items: center;
   min-height: calc(768px * var(--k));
   padding-block: var(--rhythm-half); // R3.0.C unified rhythm
+  // R31: «отступ от первой секции чуть-чуть больше» — the hero's bottom row
+  // sits closer than the next section below; even the air out
+  padding-top: calc(var(--rhythm-half) + #{$spacing-9});
+
+  @include respond(md) {
+    padding-top: calc(var(--rhythm-half) + #{$spacing-6});
+  }
   overflow: hidden;
 
   &__bg {
