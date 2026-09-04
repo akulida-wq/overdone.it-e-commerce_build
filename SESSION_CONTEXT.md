@@ -4,6 +4,11 @@
 
 ## Статус: R3…R18 + R19 (2026-08-30) ЗАВЕРШЕНЫ. Ждём следующего просмотра. HANDOFF.md актуален
 
+## R31.6 (2026-09-04) — calc→earn ещё +40 (318), Projects ±40 — ГОТОВО
+- padding-bottom калькулятора: rhythm+120 (зазор 318 @1440)
+- SectionProjects: static padding-block rhythm+40; в пин-режиме margin-top 40 + margin-bottom rhythm+40 — ScrollTrigger ПЕРЕНОСИТ маргины пинящегося элемента на pin-spacer (на самом элементе computed 0 — это норма, мерить у спейсера)
+- Пин после изменения паддингов пересчитался сам (sort-on-refreshInit из R31.5): start==actual 11406; прод-тест смены языка «overlap: no» подтверждён
+
 ## R31.5 (2026-09-04) — пин-баг окончательно: sort на каждом refresh + вотчер локали — ГОТОВО
 - Баг заказчика №2 (тот же оверлап): ПОСЛЕ СМЕНЫ ЯЗЫКА старты снова слетали (EN settled 11326==11326, после UA-свитча start 9190 vs actual 11440 — ровно −2250, компенсация спейсера ложится не туда при устаревшем ПОРЯДКЕ триггеров)
 - ФИКС ГЛОБАЛЬНО в useScrollMotion.init: ScrollTrigger.addEventListener('refreshInit', ScrollTrigger.sort) — сортировка в начале КАЖДОГО рефреша (ресайз, media, наши вызовы); + в index.vue watch(lang) → nextTick+100ms → sort()+refresh(true)
