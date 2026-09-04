@@ -352,6 +352,10 @@ function backToTop() {
       gap: $spacing-4;
       min-height: 0;
       overflow: hidden;
+      // R32: the bottom padding JUMPED in discretely at open — the row height
+      // animated smoothly but the content inside snapped 20px taller; easing
+      // the padding along the same curve removes the jerk
+      transition: padding-bottom 350ms cubic-bezier(0.45, 0, 0.55, 1);
     }
 
     .is-open .p-footer__items {
