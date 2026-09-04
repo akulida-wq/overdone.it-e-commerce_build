@@ -165,7 +165,7 @@ onBeforeUnmount(() => {
   // the tilt loop owns transform.
   &__cart-wrap {
     position: absolute;
-    left: calc(50% - 1vw); // R29.1: «слегка левее» — композиция съезжала вправо
+    left: calc(50% - 2vw); // R29.1/R31.2: ещё чуть левее по заказчику
     top: calc((100svh - 94px - min(49.9vw, 100svh - 286px)) / 2);
     width: min(90vw, calc((100svh - 286px) * 1.804));
     margin-left: max(-45vw, calc((100svh - 286px) * -0.902));
